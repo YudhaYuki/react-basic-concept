@@ -17,11 +17,21 @@ class App extends Component {
     // DON't DO THIS this.state.persons[0].name = 'Maximilian';
     this.setState( {
       persons: [
-        { name: newName, age: 27 },
+        { name: 'Yudha', age: 27 },
         { name: 'Rika', age: 36 },
         { name: 'Zulfiqar', age: 40 }
       ]
     })
+  }
+
+  nameChangedHandler = (event) => {
+    this.setState( {
+      persons: [
+        { name: 'Yudha', age: 27 },
+        { name: event.target.value, age: 36 },
+        { name: 'Zulfiqar', age: 40 }
+      ]
+    } )
   }
 
   render() {
@@ -37,7 +47,9 @@ class App extends Component {
           name={this.state.persons[1].name} 
           age={this.state.persons[1].age} 
           // Passing method using bind and anotherone above with YdhaYuki!!!
-          click={this.switchNamehandler.bind(this, 'Yudhhhhha!')} > My Hobbies: Racing </Person>
+          click={this.switchNamehandler.bind(this, 'Yudhhhhha!')} 
+          changed={this.nameChangedHandler} > My Hobbies: Racing </Person>
+
         <Person 
           name={this.state.persons[2].name} 
           age={this.state.persons[2].age} />
