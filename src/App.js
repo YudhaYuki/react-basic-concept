@@ -5,22 +5,31 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Yudha', age: 27 },
-      { name: 'Rika', age: 36 },
-      { name: 'Zulfiqar', age: 34 }
+      { id: 'asfa1', name: 'Max', age: 28 },
+      { id: 'vasdf1', name: 'Manu', age: 29 },
+      { id: 'asdf11', name: 'Stephanie', age: 26 }
     ],
-    otherState: 'Some other value',
+    otherState: 'some other value',
     showPersons: false
   }
 
-  nameChangedHandler = (event) => {
-    this.setState( {
-      persons: [
-        { name: 'Yudha', age: 27 },
-        { name: event.target.value, age: 36 },
-        { name: 'Zulfiqar', age: 40 }
-      ]
-    } )
+  nameChangedHandler = ( event, id ) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    // const person = Object.assign({}, this.state.persons[personIndex]);
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState( {persons: persons} );
   }
 
   deletePersonHandler = (personIndex) => {
@@ -30,15 +39,15 @@ class App extends Component {
     this.setState({persons: persons});
   }
 
-  togglePersonHandler = () => {
+  togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow})
+    this.setState( { showPersons: !doesShow } );
   }
 
-
-  render() {
+  render () {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: '#fff',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
@@ -47,7 +56,7 @@ class App extends Component {
 
     let persons = null;
 
-    if (this.state.showPersons) {
+    if ( this.state.showPersons ) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -55,10 +64,13 @@ class App extends Component {
               click={() => this.deletePersonHandler(index)}
               name={person.name}
               age={person.age}
-            />
+              key={person.id}
+              changed={(event) => this.nameChangedHandler(event, person.id)} />
           })}
         </div> 
       );
+
+      style.backgroundColor='red';
     }
 
     return (
@@ -66,8 +78,8 @@ class App extends Component {
         <h1>Hi, I'm a React App</h1>
         <p> This is really working </p>
         <button 
-          style={style}
-          onClick={this.togglePersonHandler}>Toggle Persons</button>
+            style={style}
+            onClick={this.togglePersonsHandler}>Toggle Persons</button>
           {persons}
       </div>
     );
